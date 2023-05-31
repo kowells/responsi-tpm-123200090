@@ -45,27 +45,43 @@ class _FoodDetailPageState extends State<FoodDetailPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Food Detail'),
+        title: Text(
+          'Meal Detail',
+          textAlign: TextAlign.center,
+        ),
+        centerTitle: true,
       ),
       body: food.isNotEmpty
           ? ListView(
               children: [
-                Image.network(
-                  food['strMealThumb'],
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.cover,
+                SizedBox(height: 8),
+                Text(
+                  food['strMeal'],
+                  style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  textAlign: TextAlign.center,
+                ),
+                SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.center,
+                  child: FittedBox(
+                    fit: BoxFit.contain,
+                    child: Image.network(
+                      food['strMealThumb'],
+                      height: 200,
+                      width: 200,
+                    ),
+                  ),
                 ),
                 Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        food['strMeal'],
-                        style: TextStyle(
-                            fontSize: 20, fontWeight: FontWeight.bold),
-                      ),
+                      // Text(
+                      //   food['strMeal'],
+                      //   style: TextStyle(
+                      //       fontSize: 20, fontWeight: FontWeight.bold),
+                      // ),
                       SizedBox(height: 16),
                       Text(
                         'Category: ${food['strCategory']}',

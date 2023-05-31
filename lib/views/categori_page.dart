@@ -64,22 +64,58 @@ class _CategoryListViewState extends State<CategoryListView> {
         future: categories,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
-            return ListView.builder(
+            return GridView.builder(
+              gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2, // Jumlah kolom dalam grid
+                crossAxisSpacing: 8.0, // Jarak horizontal antar item
+                mainAxisSpacing: 8.0, // Jarak vertikal antar item
+              ),
               itemCount: snapshot.data!.length,
               itemBuilder: (context, index) {
                 final category = snapshot.data![index];
-                return InkWell(
+                return GestureDetector(
                   onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return MealsView(text: category.strCategory);
-                    }));
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return MealsView(text: category.strCategory);
+                        },
+                      ),
+                    );
                   },
                   child: Card(
                     elevation: 4,
-                    child: ListTile(
-                      leading: Image.network(category.strCategoryThumb),
-                      title: Text(category.strCategory),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(8.0),
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      children: [
+                        Expanded(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.only(
+                              topLeft: Radius.circular(8.0),
+                              topRight: Radius.circular(8.0),
+                            ),
+                            child: Image.network(
+                              category.strCategoryThumb,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            category.strCategory,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 16.0,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 );

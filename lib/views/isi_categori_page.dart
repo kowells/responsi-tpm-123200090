@@ -21,7 +21,11 @@ class _MealsViewState extends State<MealsView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text("Meals"),
+        title: Text(
+          widget.text + ' Meal',
+          textAlign: TextAlign.center,
+        ),
+        centerTitle: true,
       ),
       body: Container(
         // FutureBuilder() membentuk hasil Future dari request API
@@ -59,14 +63,19 @@ class _MealsViewState extends State<MealsView> {
 
   // Jika data ada
   Widget _buildSuccessSection(Makanan data) {
-    return ListView.builder(
+    return GridView.builder(
+      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2, // Jumlah kolom dalam grid
+        crossAxisSpacing: 8.0, // Jarak horizontal antar item
+        mainAxisSpacing: 8.0, // Jarak vertikal antar item
+      ),
       itemCount: data.meals?.length,
       itemBuilder: (BuildContext context, int index) {
         final maem = data.meals![index];
         return Padding(
           padding:
               EdgeInsets.all(8.0), // Tambahkan padding di sini sesuai kebutuhan
-          child: ListTile(
+          child: GestureDetector(
             onTap: () {
               Navigator.push(
                 context,
@@ -75,8 +84,48 @@ class _MealsViewState extends State<MealsView> {
                 ),
               );
             },
-            leading: Image.network(maem.strMealThumb as String),
-            title: Text(maem.strMeal as String),
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(8.0),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.5),
+                    spreadRadius: 2,
+                    blurRadius: 5,
+                    offset: Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: Column(
+                children: [
+                  Expanded(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(8.0),
+                        topRight: Radius.circular(8.0),
+                      ),
+                      child: Image.network(
+                        maem.strMealThumb as String,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 8.0),
+                  Padding(
+                    padding: EdgeInsets.symmetric(horizontal: 8.0),
+                    child: Text(
+                      maem.strMeal as String,
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16.0,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ),
         );
       },
